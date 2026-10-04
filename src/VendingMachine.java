@@ -115,7 +115,7 @@ public class VendingMachine {
 			itemArray[slotIndex] = item;
 		}
 
-	}
+	} // addItem test exists
 
 	/**
 	 * Gets the item occupying the slot with the given code.

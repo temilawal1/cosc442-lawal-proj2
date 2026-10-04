@@ -5,7 +5,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
 public class VendingMachineTest {
 
     VendingMachine machine;
@@ -16,18 +15,47 @@ public class VendingMachineTest {
     public void setUp() throws Exception {
 
         machine = new VendingMachine();
-        
+
         item1 = new VendingMachineItem("oreos", 1.50);
         item2 = new VendingMachineItem("doritos", 2.50);
     }
 
+    @AfterEach
+    public void tearDown() {
+        item1 = null;
+        item2 = null;
+    }
 
     @Test
-    public void testAddItem() {
+    public void testAddItem() throws VendingMachineException {
 
         machine.addItem(item1, "A");
-        assertEquals(item1, machine.getItem("A"), "test");
+        assertEquals(item1, machine.getItem("A"), "test addItem");
 
+        machine.addItem(item2, "B");
+        assertEquals(item2, machine.getItem("B"), "test addItem");
+
+    }
+
+    @Test
+    public void testAddItem_occupiedSlot() throws VendingMachineException {
+
+        machine.addItem(item1, "A"); // partial arrange
+
+        try {
+            machine.addItem(item2, "A");
+        } catch (VendingMachineException e) {
+            assertTrue(true);
+            return;
+        }
+        assertTrue(false);
+
+    }
+
+    @Test
+    public void testGetItem() {
+        machine.getItem("A");
+        assertEquals(item1, machine.getItem("A"), "test getItem");
     }
 
 }

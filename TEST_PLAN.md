@@ -9,7 +9,7 @@ boundary behavior - at what values or conditions does the program's behavior cha
 method/behavior
 
 1. add item test
-
+-> the method does produce the expected result when used normally with valid inputs and appropriate preconditions
 2. get item
 3. remove item
 4. insert money
@@ -18,10 +18,12 @@ method/behavior
 7. return change
 
 valid cases
+1. add item test
 
 
 exception/invalid cases
-
+1. add item test
+-> enter an int instead of a string for the code, add something to an already occupied slot, add an item to another slot
 
 boundary cases
 
