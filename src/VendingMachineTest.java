@@ -74,7 +74,8 @@ public class VendingMachineTest {
     @Test
     public void testRemoveItem() {
         machine.addItem(item1, "A");
-        assertEquals(null, machine.removeItem("A"), "test removeItem");
+        assertEquals(item1, machine.removeItem("A"), "returns removed item");
+        assertEquals(null, machine.getItem("A"), "returns null: slot empty");
     }
 
     @Test 
