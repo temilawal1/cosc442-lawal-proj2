@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class VendingMachineTest {
 
@@ -27,15 +29,20 @@ public class VendingMachineTest {
         item2 = null;
     }
 
+    // checks all valid codes!
+    @ParameterizedTest
+    @ValueSource(strings = { "A", "B", "C", "D" })
+    public void testAddItem_ValidCode(String code) throws VendingMachineException {
+        machine.addItem(item1, code);
+        assertEquals(item1, machine.getItem(code));
+    }
+
     @Test
-    public void testAddItem() throws VendingMachineException {
+    public void testAddItem_InvalidCode() {
 
-        machine.addItem(item1, "A");
-        assertEquals(item1, machine.getItem("A"), "test addItem");
-
-        machine.addItem(item2, "B");
-        assertEquals(item2, machine.getItem("B"), "test addItem");
-
+        assertThrows(VendingMachineException.class, () -> {
+            machine.addItem(item1, "E");
+        });
     }
 
     @Test
@@ -49,20 +56,14 @@ public class VendingMachineTest {
 
     }
 
-    @Test
-    public void testAddItem_InvalidCode() {
+    
+    @ParameterizedTest 
+    @ValueSource(strings = { "A", "B", "C", "D" })
+    public void testGetItem_ValidCode(String code) throws VendingMachineException {
 
-        assertThrows(VendingMachineException.class, () -> {
-            machine.addItem(item1, "E");
-        });
-    }
+        machine.addItem(item1, code);
 
-    @Test
-    public void testGetItem() throws VendingMachineException {
-
-        machine.addItem(item1, "A");
-
-        assertEquals(item1, machine.getItem("A"), "test getItem");
+        assertEquals(item1, machine.getItem(code), "test getItem");
     }
 
     @Test
@@ -71,14 +72,15 @@ public class VendingMachineTest {
         assertEquals(null, machine.getItem("A"));
     }
 
-    @Test
-    public void testRemoveItem() {
-        machine.addItem(item1, "A");
-        assertEquals(item1, machine.removeItem("A"), "returns removed item");
-        assertEquals(null, machine.getItem("A"), "returns null: slot empty");
+    @ParameterizedTest 
+    @ValueSource(strings = { "A", "B", "C", "D" })
+    public void testRemoveItem_ValidCode(String code) throws VendingMachineException {
+        machine.addItem(item1, code);
+        assertEquals(item1, machine.removeItem(code), "returns removed item");
+        assertEquals(null, machine.getItem(code), "returns null: slot empty");
     }
 
-    @Test 
+    @Test
     public void testRemoveItem_EmptySlot() {
         assertThrows(VendingMachineException.class, () -> {
             machine.removeItem("A");
